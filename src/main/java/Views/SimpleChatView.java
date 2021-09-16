@@ -15,6 +15,7 @@ public class SimpleChatView extends javax.swing.JPanel {
         
     SimpleChatController simpleChatController;
     ArrayList<UserModel> usuarios = new ArrayList<>();
+    String chatCompleto;
         
     public SimpleChatView(){
         initComponents();
@@ -85,6 +86,15 @@ public class SimpleChatView extends javax.swing.JPanel {
     public void setTxtMensaje(JTextArea txtMensaje) {
         this.txtMensaje = txtMensaje;
     }
+
+    public String getChatCompleto() {
+        return chatCompleto;
+    }
+
+    public void setChatCompleto(String chatCompleto) {
+        this.chatCompleto = chatCompleto;
+    }
+    
 
             
     /**

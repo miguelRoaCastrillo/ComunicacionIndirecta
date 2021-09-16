@@ -8,6 +8,7 @@ import org.jgroups.ObjectMessage;
 import org.jgroups.Receiver;
 import org.jgroups.View;
 
+
 /**
  *
  * @author Miguel Roa
@@ -19,18 +20,15 @@ public class SimpleChatController implements Receiver {
     HiloRecibirMensajes hiloMensajes;
     SimpleChatView simpleChat;
     
+    
     //Constructor
     public SimpleChatController(SimpleChatView simpleChat) throws Exception  {
         
         System.out.println("Inicia el controlador del chat");
         
         try{
-            
-            this.start();            
-            this.simpleChat = simpleChat;
-            
-            this.correHilo();
-            
+            this.simpleChat = simpleChat;                        
+            this.start();                                    
         }catch(Exception error){
             System.out.println("Existe un error al inicializar el canal de mensajería: " + error.toString());
             throw error;
@@ -71,22 +69,8 @@ public class SimpleChatController implements Receiver {
      * Inicia el canal de mensajería
     */
     private void start() throws Exception {
-
-        channel = new JChannel(); // Usa la configuración estandar XML (udp.xml)
-        channel.setReceiver(recibidor);
-        channel.connect("SimpleChat");
-
-    }
-    
-    /*
-    * Recibe un mensaje del canal en cuestión
-    */
-    public void recibeMensaje(){
-        try{
-            
-        }catch(Exception error){
-            System.out.println("Existe un error al traer los mensajes del canal");
-        }
+        channel = new JChannel().setReceiver(this).connect("SimpleChat");    
+        correHilo();
     }
     
     /**
@@ -95,7 +79,7 @@ public class SimpleChatController implements Receiver {
      */
     public final void correHilo(){
         try{
-            Runnable runnable = new HiloRecibirMensajes(channel, recibidor, simpleChat);
+            Runnable runnable = new HiloRecibirMensajes(channel, recibidor, simpleChat, this);
             Thread hiloRecibirMensajes = new Thread(runnable);
             hiloRecibirMensajes.start();   
         }catch(Exception error){
@@ -110,6 +94,10 @@ public class SimpleChatController implements Receiver {
 
     @Override
     public void receive(Message msg) {
+        System.out.println("Recibiendo mensaje ");
         System.out.println(msg.getSrc() + ": " + msg.getObject());
+        //Va sumando la cadena de caracteres en el chat completo
+        this.simpleChat.setChatCompleto(this.simpleChat.getChatCompleto() + msg.getObject().toString());
+        this.simpleChat.getTxtChat().setText(this.simpleChat.getChatCompleto());
     }
 }
