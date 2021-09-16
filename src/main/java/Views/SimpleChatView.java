@@ -25,7 +25,7 @@ public class SimpleChatView extends javax.swing.JPanel {
         
         //Se inicializa controlador
         try{
-            simpleChatController = new SimpleChatController();
+            simpleChatController = new SimpleChatController(this);
         }catch(Exception error){
             System.out.println("Existe un error al inicializar el controlador para el chat simple: " + error.toString());
         }
@@ -42,7 +42,7 @@ public class SimpleChatView extends javax.swing.JPanel {
         );
         
         //Se añade al usuario al chat
-        usuarios.add(usuarioIngresado);
+        usuarios.add(usuarioIngresado);                
     }
     
     //Set y get
@@ -161,7 +161,7 @@ public class SimpleChatView extends javax.swing.JPanel {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         try{
-            simpleChatController.enviarMensaje(this);
+            simpleChatController.enviarMensaje();
         }catch(Exception error){
             System.out.println("Existe un error al querer enviar el mensaje en cuestion" + error);
         }

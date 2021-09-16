@@ -8,9 +8,6 @@ package Views;
 import Controllers.MainController;
 import Models.UserModel;
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
@@ -37,29 +34,6 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
         
         this.btnOK.setBackground(Color.decode("#7A91FF"));
         
-        this.addKeyListener(new KeyListener() {
-            
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    mostrarChat();
-                } 
-            }            
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    mostrarChat();
-                } 
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    mostrarChat();
-                } 
-            }            
-        });
     }
     
     //Set y get
