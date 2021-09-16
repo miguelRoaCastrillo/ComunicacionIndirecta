@@ -10,6 +10,7 @@ import Models.UserModel;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
     
     MainController mainController;
     JOptionPane pane;
+    Boolean esProfesor;
 
     /**
      * Crea una CreacionUsuarioView
@@ -101,6 +103,22 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
     public void setTxtNombre(JTextField txtNombre) {
         this.txtNombre = txtNombre;
     }
+
+    public Boolean getEsProfesor() {
+        return esProfesor;
+    }
+
+    public void setEsProfesor(Boolean esProfesor) {
+        this.esProfesor = esProfesor;
+    }
+
+    public JCheckBox getCheckEsProfesor() {
+        return CheckEsProfesor;
+    }
+
+    public void setCheckEsProfesor(JCheckBox CheckEsProfesor) {
+        this.CheckEsProfesor = CheckEsProfesor;
+    }                    
     
     /*
     * Permite entrar en la ventana de chat
@@ -112,7 +130,7 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
                 , this.txtApellido.getText()
                 , this.colorPicker.getColor()
             );
-            mainController.mostrarChat(usuario);           
+            mainController.mostrarChat(usuario, esProfesor);           
         }catch(Exception error){
             System.out.println("Existe un error para abrir la ventana de chat con el user indicado: " + error.toString());
         }
@@ -134,6 +152,7 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
         txtApellido = new javax.swing.JTextField();
         colorPicker = new javax.swing.JColorChooser();
         btnOK = new javax.swing.JButton();
+        CheckEsProfesor = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Crea un usuario"));
         setMaximumSize(new java.awt.Dimension(550, 460));
@@ -179,6 +198,13 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
             }
         });
 
+        CheckEsProfesor.setText("¿Es usted el profesor?");
+        CheckEsProfesor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                CheckEsProfesorItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,18 +212,23 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(colorPicker, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(CheckEsProfesor)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 14, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(79, 79, 79)
-                        .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(colorPicker, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 9, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(79, 79, 79)
+                                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(15, Short.MAX_VALUE))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtApellido, txtNombre});
@@ -216,8 +247,10 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtApellido)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(colorPicker, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CheckEsProfesor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(colorPicker, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -227,7 +260,7 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void none(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_none
-        // TODO add your handling code here:
+        //ERROR
     }//GEN-LAST:event_none
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
@@ -260,8 +293,18 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_colorPickerKeyReleased
 
+    private void CheckEsProfesorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CheckEsProfesorItemStateChanged
+        //Si cambia el checkbox para saber si es profesor o no
+        if(this.CheckEsProfesor.isSelected()){
+            this.esProfesor = true;
+        }else{
+            this.esProfesor = false;
+        }
+    }//GEN-LAST:event_CheckEsProfesorItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox CheckEsProfesor;
     private javax.swing.JButton btnOK;
     private javax.swing.JColorChooser colorPicker;
     private javax.swing.JLabel jLabel1;

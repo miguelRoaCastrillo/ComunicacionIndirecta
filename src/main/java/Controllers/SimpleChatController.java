@@ -88,7 +88,7 @@ public class SimpleChatController implements Receiver {
      */
     public final void correHilo(){
         try{
-            
+            //Para contar el número de segundos ejecución
             Runnable runnable = new HiloRecibirMensajes(channel, recibidor, simpleChat, this);
             Thread hiloRecibirMensajes = new Thread(runnable);
             hiloRecibirMensajes.start();   

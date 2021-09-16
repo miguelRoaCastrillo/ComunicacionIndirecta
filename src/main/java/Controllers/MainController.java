@@ -26,7 +26,7 @@ public class MainController {
         this.mainFrame = mainFrame;
     }
         
-    public boolean mostrarChat(UserModel usuario) throws Exception {
+    public boolean mostrarChat(UserModel usuario, Boolean esProfesor) throws Exception {
         try{                                                  
                         
             int resp = JOptionPane.showConfirmDialog(
@@ -37,7 +37,7 @@ public class MainController {
             );
             
             if(resp == JOptionPane.YES_OPTION){
-                SimpleChatView simpleChat = new SimpleChatView(usuario);
+                SimpleChatView simpleChat = new SimpleChatView(usuario, esProfesor);
                 simpleChat.setBackground(Color.white);
                 simpleChat.setBounds(0,0,550,450);                 
             
