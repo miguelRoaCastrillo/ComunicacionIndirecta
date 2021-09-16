@@ -8,6 +8,7 @@ package Views;
 import Controllers.MainController;
 import Models.UserModel;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
@@ -147,11 +148,27 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
                 none(evt);
             }
         });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Apelllido");
 
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtApellidoKeyReleased(evt);
+            }
+        });
+
         colorPicker.setBorder(javax.swing.BorderFactory.createTitledBorder("Elige un color"));
+        colorPicker.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                colorPickerKeyReleased(evt);
+            }
+        });
 
         btnOK.setBackground(new java.awt.Color(153, 153, 153));
         btnOK.setForeground(new java.awt.Color(255, 255, 255));
@@ -212,6 +229,36 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
     private void none(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_none
         // TODO add your handling code here:
     }//GEN-LAST:event_none
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            try{
+                mostrarChat();
+            }catch(Exception error){
+                System.out.println("Existe un error para enviar el mensaje en cuestión: " + error.toString());
+            }           
+        }
+    }//GEN-LAST:event_txtNombreKeyReleased
+
+    private void txtApellidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            try{
+                mostrarChat();
+            }catch(Exception error){
+                System.out.println("Existe un error para enviar el mensaje en cuestión: " + error.toString());
+            }           
+        }
+    }//GEN-LAST:event_txtApellidoKeyReleased
+
+    private void colorPickerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_colorPickerKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            try{
+                mostrarChat();
+            }catch(Exception error){
+                System.out.println("Existe un error para enviar el mensaje en cuestión: " + error.toString());
+            }           
+        }
+    }//GEN-LAST:event_colorPickerKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

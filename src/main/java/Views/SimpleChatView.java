@@ -2,7 +2,7 @@ package Views;
 
 import Controllers.SimpleChatController;
 import Models.UserModel;
-import java.util.ArrayList;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 public class SimpleChatView extends javax.swing.JPanel {
         
     SimpleChatController simpleChatController;
-    ArrayList<UserModel> usuarios = new ArrayList<>();
+    UserModel usuario;
     String chatCompleto;
         
     public SimpleChatView(){
@@ -23,6 +23,8 @@ public class SimpleChatView extends javax.swing.JPanel {
     
     public SimpleChatView(UserModel usuarioIngresado){
         this();
+        
+        this.usuario = usuarioIngresado;
         
         //Se inicializa controlador
         try{
@@ -35,15 +37,13 @@ public class SimpleChatView extends javax.swing.JPanel {
         txtMensaje.setLineWrap(true);        
         txtChat.setLineWrap(true);
         
+        
         //test
         System.out.println("El usuario ingresado es el siguiente \n"
                 + "Nombre: " + usuarioIngresado.getNombre() + "\n"
                 + "Apellido: " + usuarioIngresado.getApellido() + "\n"
                 + "Color: " + usuarioIngresado.getColor().toString()
-        );
-        
-        //Se añade al usuario al chat
-        usuarios.add(usuarioIngresado);                
+        );                
     }
     
     //Set y get
@@ -94,9 +94,15 @@ public class SimpleChatView extends javax.swing.JPanel {
     public void setChatCompleto(String chatCompleto) {
         this.chatCompleto = chatCompleto;
     }
-    
 
-            
+    public UserModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UserModel usuario) {
+        this.usuario = usuario;
+    }
+               
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,6 +144,11 @@ public class SimpleChatView extends javax.swing.JPanel {
         txtMensaje.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         txtMensaje.setRows(5);
         txtMensaje.setWrapStyleWord(true);
+        txtMensaje.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMensajeKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(txtMensaje);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -171,11 +182,21 @@ public class SimpleChatView extends javax.swing.JPanel {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         try{
-            simpleChatController.enviarMensaje();
+            simpleChatController.enviarMensaje();            
         }catch(Exception error){
             System.out.println("Existe un error al querer enviar el mensaje en cuestion" + error);
         }
     }//GEN-LAST:event_btnEnviarActionPerformed
+
+    private void txtMensajeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMensajeKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            try{
+                simpleChatController.enviarMensaje();            
+            }catch(Exception error){
+                System.out.println("Existe un error para enviar el mensaje en cuestión: " + error.toString());
+            }           
+        }
+    }//GEN-LAST:event_txtMensajeKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

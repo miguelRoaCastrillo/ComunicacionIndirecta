@@ -42,7 +42,13 @@ public class SimpleChatController implements Receiver {
      */
     public String enviarMensaje(){
         
-        String mensaje = this.simpleChat.getTxtMensaje().getText();
+        String mensaje = "";
+        
+        mensaje = mensaje + "Usuario: " + (this.simpleChat.getUsuario().getNombre() != null ? this.simpleChat.getUsuario().getNombre() : "");        
+        mensaje = mensaje + " " + (this.simpleChat.getUsuario().getApellido() != null ? this.simpleChat.getUsuario().getApellido() : "");
+        mensaje = mensaje + "\n";
+        mensaje = mensaje + "Dice: " + this.simpleChat.getTxtMensaje().getText();       
+        mensaje = mensaje + "\n";
         
         if(!mensaje.isEmpty()){
             
@@ -56,6 +62,9 @@ public class SimpleChatController implements Receiver {
                 System.out.println("Existe un errro al intentar enviar el mensaje designado: " + error.toString());
             }
 
+            //Limpia el campo de mensaje para enviar otro de manera más fácil
+            this.simpleChat.getTxtMensaje().setText("");
+            
             return mensaje;
             
         }else{
@@ -79,9 +88,11 @@ public class SimpleChatController implements Receiver {
      */
     public final void correHilo(){
         try{
+            
             Runnable runnable = new HiloRecibirMensajes(channel, recibidor, simpleChat, this);
             Thread hiloRecibirMensajes = new Thread(runnable);
             hiloRecibirMensajes.start();   
+            
         }catch(Exception error){
             System.out.println("Existe un problema al correr el hilo para la lectura de mensajes: " + error.toString());
         }       
@@ -96,8 +107,16 @@ public class SimpleChatController implements Receiver {
     public void receive(Message msg) {
         System.out.println("Recibiendo mensaje ");
         System.out.println(msg.getSrc() + ": " + msg.getObject());
+        
         //Va sumando la cadena de caracteres en el chat completo
-        this.simpleChat.setChatCompleto(this.simpleChat.getChatCompleto() + msg.getObject().toString());
+        String chatcompleto = this.simpleChat.getChatCompleto();
+        if(chatcompleto == null){
+            chatcompleto = "";
+        }
+        
+        chatcompleto = chatcompleto + (msg.getObject() != null ? msg.getObject().toString() : "" );
+        
+        this.simpleChat.setChatCompleto(chatcompleto);
         this.simpleChat.getTxtChat().setText(this.simpleChat.getChatCompleto());
     }
 }

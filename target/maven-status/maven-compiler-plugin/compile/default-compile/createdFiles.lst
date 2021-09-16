@@ -3,11 +3,11 @@ Views\CreacionUsuarioView$1.class
 Views\CreacionUsuarioView.class
 Settings.class
 Views\SimpleChatView.class
+Hilos\HiloRecibirMensajes.class
 Views\MainAppFrame$1.class
 Controllers\MainController.class
 MainClass.class
 Models\UserModel.class
-Views\CreacionUsuarioView$3.class
 Views\SimpleChatView$1.class
 Views\MainAppFrame.class
 Views\CreacionUsuarioView$2.class
