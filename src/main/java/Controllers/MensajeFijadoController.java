@@ -1,6 +1,10 @@
 package Controllers;
 
 import Views.SimpleChatView;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ObjectMessage;
@@ -26,10 +30,9 @@ public class MensajeFijadoController implements Receiver{
         this.simpleChat = simpleChat;        
         this.esProfesor = esProfesor;       
         
-        //Se inicialoa el reciever
+        //Se inicializa el reciever
         try{
-            this.start();
-            enviarMensaje();
+            this.start();            
         }catch(Exception error){
             System.out.println("Existe un error al iniciar el canal para el mensaje fijado: " + error.toString());
         }
@@ -59,9 +62,8 @@ public class MensajeFijadoController implements Receiver{
     public void enviarMensaje(){
         if(this.channel.getState().equals("CONNECTED")){
             
-            String mensaje = "Este es el mensaje fijado";
-            
-            Message msg = new ObjectMessage(null, mensaje);
+            String mensaje = simpleChat.getTxtMensaje().getText();                                    
+            Message msg = new ObjectMessage(null, mensaje);                       
             
             try{
                 this.channel.send(msg);
@@ -69,6 +71,29 @@ public class MensajeFijadoController implements Receiver{
                 System.out.println("Existe un error para enviar dicho mensaje fijado: " + error.toString());
                      
             }
+        }
+    }
+    /**
+     * Permite leer el mensaje fijado que dejó el profesor
+     * 
+    */
+    public void leerMensajeFijado(){
+        try{
+
+            //Se lee el nuevo mensaje guardado en el archivo mencionado
+            FileReader reader = new FileReader("mensajesFijados.txt");               
+
+            int i;
+            String newMensajeFijado = "";
+
+            while(( i = reader.read() ) != -1){
+                newMensajeFijado = newMensajeFijado + ((char) i);
+            }               
+
+            this.simpleChat.getTxtMensajeFijado().setText(newMensajeFijado);
+            
+        }catch(IOException error){
+            System.out.println("Existe un error al intentar leer el archivo con el mensaje fijado del profesor: " + error.toString());
         }
     }
     /**
@@ -86,8 +111,39 @@ public class MensajeFijadoController implements Receiver{
     @Override
     public void receive(Message msg) {
         System.out.println("Recibiendo mensaje fijado");
-        System.out.println(msg.getSrc() + ": " + msg.getObject()); 
+        System.out.println(msg.getSrc() + ": " + msg.getObject());   
         
-        this.simpleChat.getTxtMensajeFijado().setText(msg.getObject().toString());                
+        String mensaje = msg.getObject().toString();
+        
+        /**
+         * Se tendría que guardar dicho mensaje en un archivo
+         * para que todos los estudiantes a través del tiempo de ejecución puedan verlo
+         * aún así no habiendo estado ellos cuando el profesor lo envió, por tanto se agrega a continuación
+        */
+        
+        try{
+            //En la ruta base de este projecto de Java
+            File archivoMensajesFijados = new File("mensajesFijados.txt");
+            
+            //Si el archivo no existe se crea
+            if(!archivoMensajesFijados.exists()){                
+                archivoMensajesFijados.createNewFile();
+            }
+            
+            //Se escribe el contenido del mensaje sobre el archivo indicado            
+            FileWriter escritor = new FileWriter(archivoMensajesFijados);
+            
+            for(int i=0; i < mensaje.length() ; i++){
+                escritor.write(mensaje.charAt(i));
+            }
+            
+            escritor.close();
+            
+            //Se lee el nuevo mensaje fijado
+            leerMensajeFijado();  
+            
+        }catch(IOException error){
+            System.out.println("Existe un error en el archivo de mensajes fijados: " + error.toString());
+        }           
     }           
 }

@@ -6,6 +6,7 @@
 package Controllers;
 
 import Models.UserModel;
+import Views.CreacionUsuarioView;
 import Views.MainAppFrame;
 import Views.SimpleChatView;
 import java.awt.Color;
@@ -20,24 +21,42 @@ public class MainController {
     
     MainAppFrame mainFrame;
     JOptionPane pane;
-    UserModel usuario;
+    UserModel usuario; 
+    CreacionUsuarioView creacionUsuarioView;
     
     public MainController(MainAppFrame mainFrame){
         this.mainFrame = mainFrame;
     }
         
-    public boolean mostrarChat(UserModel usuario, Boolean esProfesor) throws Exception {
+    public boolean mostrarChat(
+            UserModel usuario,
+            Boolean esProfesor,
+            CreacionUsuarioView creacionUsuarioView,
+            Color color
+    ) throws Exception {
         try{                                                  
-                        
+                                    
+
             int resp = JOptionPane.showConfirmDialog(
                 mainFrame,
                 "¿Está seguro de los datos y quiere entrar con dicho usuario?",
                 "Confirmación",
                 JOptionPane.YES_NO_OPTION
-            );
+            ); 
+            
+            /*
+                this.creacionUsuarioView = creacionUsuarioView;
+
+                this.creacionUsuarioView.getLabelLoading().setText("CARGANDO...");
+                this.creacionUsuarioView.getLabelLoading().setVisible(true);
+                this.creacionUsuarioView.revalidate();
+                this.creacionUsuarioView.repaint();                       
+            */
             
             if(resp == JOptionPane.YES_OPTION){
-                SimpleChatView simpleChat = new SimpleChatView(usuario, esProfesor);
+                                                                
+                SimpleChatView simpleChat = new SimpleChatView(usuario, esProfesor, color);                                
+                        
                 simpleChat.setBackground(Color.white);
                 simpleChat.setBounds(0,0,550,450);                 
             

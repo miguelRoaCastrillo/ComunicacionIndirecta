@@ -2,6 +2,8 @@ package Controllers;
 
 import Hilos.HiloRecibirMensajes;
 import Views.SimpleChatView;
+import java.io.FileReader;
+import java.io.IOException;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ObjectMessage;
@@ -74,6 +76,29 @@ public class SimpleChatController implements Receiver {
         }        
     }  
     
+    /**
+     * Para leer el archivo del mensaje fijado en caso de ser estudiante
+    */
+    public void leerMensajeFijado(){
+        try{
+
+            //Se lee el nuevo mensaje guardado en el archivo mencionado
+            FileReader reader = new FileReader("mensajesFijados.txt");               
+
+            int i;
+            String newMensajeFijado = "";
+
+            while(( i = reader.read() ) != -1){
+                newMensajeFijado = newMensajeFijado + ((char) i);
+            }               
+
+            this.simpleChat.getTxtMensajeFijado().setText(newMensajeFijado);
+            
+        }catch(IOException error){
+            System.out.println("Existe un error al intentar leer el archivo con el mensaje fijado del profesor: " + error.toString());
+        }
+    }
+
     /**
      * Inicia el canal de mensajería
     */

@@ -36,7 +36,10 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
         this.mainController = mainController;
         
         this.btnOK.setBackground(Color.decode("#7A91FF"));
+               
+        this.labelLoading.setVisible(false);  
         
+        this.esProfesor = false;
     }
     
     //Set y get
@@ -118,19 +121,31 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
 
     public void setCheckEsProfesor(JCheckBox CheckEsProfesor) {
         this.CheckEsProfesor = CheckEsProfesor;
-    }                    
+    }  
+
+    public JLabel getLabelLoading() {
+        return labelLoading;
+    }
+
+    public void setLabelLoading(JLabel labelLoading) {
+        this.labelLoading = labelLoading;
+    }
+    
     
     /*
     * Permite entrar en la ventana de chat
     */
     public void mostrarChat(){
-        try{                      
+        try{     
+            
             UserModel usuario = new UserModel(
                 this.txtNombre.getText()
                 , this.txtApellido.getText()
                 , this.colorPicker.getColor()
             );
-            mainController.mostrarChat(usuario, esProfesor);           
+            
+            mainController.mostrarChat(usuario, esProfesor, this, this.colorPicker.getColor());           
+            
         }catch(Exception error){
             System.out.println("Existe un error para abrir la ventana de chat con el user indicado: " + error.toString());
         }
@@ -153,6 +168,7 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
         colorPicker = new javax.swing.JColorChooser();
         btnOK = new javax.swing.JButton();
         CheckEsProfesor = new javax.swing.JCheckBox();
+        labelLoading = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Crea un usuario"));
         setMaximumSize(new java.awt.Dimension(550, 460));
@@ -205,6 +221,10 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
             }
         });
 
+        labelLoading.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        labelLoading.setForeground(new java.awt.Color(102, 51, 255));
+        labelLoading.setText("loading");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -223,9 +243,10 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
                                     .addComponent(jLabel1)
                                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 9, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel2)
-                                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                    .addComponent(labelLoading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(79, 79, 79)
                                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(15, Short.MAX_VALUE))))
@@ -247,8 +268,10 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtApellido)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(CheckEsProfesor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(CheckEsProfesor)
+                    .addComponent(labelLoading, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(colorPicker, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -309,6 +332,7 @@ public class CreacionUsuarioView extends javax.swing.JPanel {
     private javax.swing.JColorChooser colorPicker;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel labelLoading;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
